@@ -14,6 +14,34 @@ model Book {
     year Int
     author String
     publisher String
+
+    categories BookCategory[]
+
     created_at DateTime @default(now())
     updated_at DateTime @updatedAt
+
+    @@map("books")
+}
+
+model Category {
+    id Int @id @default(autoincrement())
+    name String @unique
+
+    books BookCategory[]
+
+    created_at DateTime @default(now())
+    updated_at DateTime @updatedAt
+
+    @@map("categories")
+}
+
+model BookCategory {
+    book Book @relation(fields: [book_id], references: [id], onDelete: Cascade)
+    book_id Int
+
+    category Category @relation(fields: [category_id], references: [id], onDelete: Cascade)
+    category_id Int
+
+    @@id([book_id, category_id])
+    @@map("books_categories")
 }
