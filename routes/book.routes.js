@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { createBook, updateBook, getAllBooks, getBook } from '../controllers/book.controller.js'
+import { createBook, updateBook, getAllBooks, getBook, deleteBook } from '../controllers/book.controller.js'
 import { validate } from '../middlewares/validate.middleware.js';
 import { bookSchema } from '../validations/book.validate.js';
 
