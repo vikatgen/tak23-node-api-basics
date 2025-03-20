@@ -29,7 +29,9 @@ export const getBook = async (request, response) => {
         const { id } = request.params
 
         const book = await prisma.book.findUnique({
-            where: { id }
+            where: { 
+                id: Number(id) 
+            }
         })
 
         if (!book) {
@@ -117,12 +119,13 @@ export const deleteBook = async (request, response) => {
         const { id } = request.params;
 
         await prisma.book.delete({
-            where: { id }
+            where: { 
+                id: Number(id) 
+            }
         })
 
         response.status(200).json({
             message: "Book deleted successfully.",
-            updatedBook
         })
 
     } catch (error) {
