@@ -118,11 +118,11 @@ export const deleteBook = async (request, response) => {
         
         const { id } = request.params;
 
-        await prisma.book.delete({
-            where: { 
-                id: Number(id) 
-            }
-        })
+        // await prisma.book.delete({
+        //     where: { 
+        //         id: Number(id) 
+        //     }
+        // })
 
         response.status(200).json({
             message: "Book deleted successfully.",
