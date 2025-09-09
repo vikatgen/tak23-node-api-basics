@@ -7,41 +7,50 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model User {
+  id           Int    @id @default(autoincrement())
+  email        String @unique
+  passwordHash String
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+}
+
 model Book {
-    id Int @id @default(autoincrement())
-    title String
-    description String @db.Text
-    year Int
-    author String
-    publisher String
+  id          Int    @id @default(autoincrement())
+  title       String
+  description String @db.Text
+  year        Int
+  author      String
+  publisher   String
 
-    categories BookCategory[]
+  categories BookCategory[]
 
-    created_at DateTime @default(now())
-    updated_at DateTime @updatedAt
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
 
-    @@map("books")
+  @@map("books")
 }
 
 model Category {
-    id Int @id @default(autoincrement())
-    name String @unique
+  id   Int    @id @default(autoincrement())
+  name String @unique
 
-    books BookCategory[]
+  books BookCategory[]
 
-    created_at DateTime @default(now())
-    updated_at DateTime @updatedAt
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
 
-    @@map("categories")
+  @@map("categories")
 }
 
 model BookCategory {
-    book Book @relation(fields: [book_id], references: [id], onDelete: Cascade)
-    book_id Int
+  book    Book @relation(fields: [book_id], references: [id], onDelete: Cascade)
+  book_id Int
 
-    category Category @relation(fields: [category_id], references: [id], onDelete: Cascade)
-    category_id Int
+  category    Category @relation(fields: [category_id], references: [id], onDelete: Cascade)
+  category_id Int
 
-    @@id([book_id, category_id])
-    @@map("books_categories")
+  @@id([book_id, category_id])
+  @@map("books_categories")
 }

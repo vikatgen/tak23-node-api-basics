@@ -1,6 +1,7 @@
 import express from "express";
 import dotenv from "dotenv";
 import bookRoutes from "./routes/book.routes.js";
+import authRoutes from "./routes/auth.routes.js";
 import { swaggerOptions } from "./utils/swaggerOptions.js";
 import swaggerUI from 'swagger-ui-express';
 import swaggerJSDoc from "swagger-jsdoc";
@@ -15,6 +16,7 @@ app.use(express.json());
 const swaggerDocs = swaggerJSDoc(swaggerOptions);
 app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocs));
 
+app.use(authRoutes);
 app.use(bookRoutes);
 
 app.listen(PORT, () => {
