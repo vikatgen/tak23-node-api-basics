@@ -5,12 +5,15 @@ import authRoutes from "./routes/auth.routes.js";
 import { swaggerOptions } from "./utils/swaggerOptions.js";
 import swaggerUI from 'swagger-ui-express';
 import swaggerJSDoc from "swagger-jsdoc";
+import cors from 'cors';
 
 dotenv.config();
 
 const PORT = process.env.PORT || 3006;
 
 const app = express();
+
+app.use(cors());
 app.use(express.json());
 
 const swaggerDocs = swaggerJSDoc(swaggerOptions);
