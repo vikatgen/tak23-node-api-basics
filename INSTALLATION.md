@@ -37,6 +37,11 @@ Replace:
 The SQLite database file (`dev.sqlite`) will be automatically created in the project root when you run the migrations.
 
 ### 4. Database Setup
+Create a SQLite file into prisma folder
+```bash
+touch ./prisma/dev.sqlite
+```
+
 Generate and run Prisma migrations:
 ```bash
 npx prisma migrate dev
