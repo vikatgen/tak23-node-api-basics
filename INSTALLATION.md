@@ -4,7 +4,6 @@
 
 - **Node.js** (version 18 or higher)
 - **npm** (comes with Node.js)
-- **MySQL** database server
 
 ## Installation Steps
 
@@ -28,15 +27,14 @@ cp .env.example .env
 Edit the `.env` file and configure the following variables:
 ```env
 PORT=3006
-DATABASE_URL="mysql://username:password@localhost:3306/database_name"
+DATABASE_URL="file:./dev.sqlite"
 JWT_SECRET="your-jwt-secret-key"
 ```
 
 Replace:
-- `username` with your MySQL username
-- `password` with your MySQL password
-- `database_name` with your desired database name
 - `your-jwt-secret-key` with a secure secret key for JWT tokens
+
+The SQLite database file (`dev.sqlite`) will be automatically created in the project root when you run the migrations.
 
 ### 4. Database Setup
 Generate and run Prisma migrations:
@@ -87,15 +85,16 @@ The application includes the following models:
 ## Troubleshooting
 
 ### Database Connection Issues
-- Ensure MySQL server is running
-- Verify database credentials in `.env`
-- Check if the database exists
+- Verify the SQLite database file path in `.env`
+- Ensure the project directory is writable (for SQLite file creation)
+- Check if migrations have been run successfully
 
 ### Port Already in Use
 - Change the `PORT` variable in `.env` to an available port
 - Or stop the process using port 3006
 
 ### Migration Errors
-- Ensure database is accessible
+- Ensure the project directory is writable for SQLite file creation
 - Run `npx prisma db push` for development
 - Check Prisma schema syntax in `prisma/schema.prisma`
+- Delete the SQLite file and re-run migrations if schema changes cause conflicts

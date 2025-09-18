@@ -19,7 +19,7 @@ model User {
 model Book {
   id          Int    @id @default(autoincrement())
   title       String
-  description String @db.Text
+  description String
   year        Int
   author      String
   publisher   String
