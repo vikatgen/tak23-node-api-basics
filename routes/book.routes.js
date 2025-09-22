@@ -4,8 +4,6 @@ import { validate } from '../middlewares/validate.middleware.js';
 import { bookSchema } from '../validations/book.validate.js';
 import { authenticateToken } from "../middlewares/auth.middleware.js";
 
-//https:ametikool.ee/books
-
 const router = Router();
 
 router.get('/books', authenticateToken,  getAllBooks)
