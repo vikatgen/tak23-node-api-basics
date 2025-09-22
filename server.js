@@ -1,5 +1,4 @@
 import express from "express";
-import dotenv from "dotenv";
 import bookRoutes from "./routes/book.routes.js";
 import authRoutes from "./routes/auth.routes.js";
 import { swaggerOptions } from "./utils/swaggerOptions.js";
@@ -7,10 +6,9 @@ import swaggerUI from 'swagger-ui-express';
 import swaggerJSDoc from "swagger-jsdoc";
 import cors from 'cors';
 import helmet from "helmet";
+import enviorment from "./config/config.js";
 
-dotenv.config();
-
-const PORT = process.env.PORT || 3006;
+const PORT = enviorment.PORT || 3006;
 
 const app = express();
 
