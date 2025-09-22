@@ -6,6 +6,7 @@ import { swaggerOptions } from "./utils/swaggerOptions.js";
 import swaggerUI from 'swagger-ui-express';
 import swaggerJSDoc from "swagger-jsdoc";
 import cors from 'cors';
+import helmet from "helmet";
 
 dotenv.config();
 
@@ -14,6 +15,7 @@ const PORT = process.env.PORT || 3006;
 const app = express();
 
 app.use(cors());
+app.use(helmet());
 app.use(express.json());
 
 const swaggerDocs = swaggerJSDoc(swaggerOptions);
