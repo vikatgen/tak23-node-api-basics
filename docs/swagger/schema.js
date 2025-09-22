@@ -100,6 +100,60 @@ export default {
             }
         }
     },
+    User: {
+        type: 'object',
+        properties: {
+            id: {
+                type: 'integer',
+                example: 1,
+                description: 'Unique identifier for the user'
+            },
+            email: {
+                type: 'string',
+                format: 'email',
+                example: 'user@example.com',
+                description: 'User\'s email address'
+            },
+            created_at: {
+                type: 'string',
+                format: 'date-time',
+                description: 'Date and time when the user was created'
+            },
+            updated_at: {
+                type: 'string',
+                format: 'date-time',
+                description: 'Date and time when the user was last updated'
+            }
+        }
+    },
+    UserCredentials: {
+        type: 'object',
+        required: ['email', 'password'],
+        properties: {
+            email: {
+                type: 'string',
+                format: 'email',
+                example: 'user@example.com',
+                description: 'User\'s email address'
+            },
+            password: {
+                type: 'string',
+                format: 'password',
+                example: 'securePassword123',
+                description: 'User\'s password'
+            }
+        }
+    },
+    AuthResponse: {
+        type: 'object',
+        properties: {
+            token: {
+                type: 'string',
+                description: 'JWT token for authentication',
+                example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...'
+            }
+        }
+    },
     Error: {
         type: 'object',
         properties: {
