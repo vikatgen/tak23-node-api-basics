@@ -1,19 +1,37 @@
 import { PrismaClient } from '@prisma/client'
+import { buildPrismaQueryOptions } from "prisma-smart-query";
 
-const prisma = new PrismaClient()
+const prisma = new PrismaClient();
 
 
 export const getAllBooks = async (request, response) => {
 
     try {
-        
-        const books = await prisma.book.findMany()
+        const { queryOptions, meta } = buildPrismaQueryOptions(
+            request,
+            {},
+            ["title", "author", "publisher", "description"],
+            {
+                defaultSort: { created_at: "desc" },
+            }
+        )
+
+        const [books, total] = await Promise.all([
+            prisma.book.findMany(queryOptions),
+            prisma.book.count({ where: queryOptions.where })
+        ])
 
         response.status(200).json({
-            books
+            data: books,
+            meta: {
+                ...meta,
+                total,
+                totalPages: Math.ceil(total / meta.limit)
+            }
         })
 
-    } catch (error) {
+    } catch (error)
+    {
         console.log(error)
         response.status(500).json({
             message: "Something happening. Bad luck."
@@ -25,7 +43,6 @@ export const getAllBooks = async (request, response) => {
 export const getBook = async (request, response) => {
 
     try {
-
         const { id } = request.params
 
         const book = await prisma.book.findUnique({
@@ -65,6 +82,7 @@ export const createBook = async (request, response) => {
                 description: description,
                 year: year,
                 author: author,
+
                 publisher: publisher
             }
         })

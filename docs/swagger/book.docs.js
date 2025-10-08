@@ -3,8 +3,45 @@ export default {
         get: {
             tags: ['Books'],
             summary: 'Get all books',
-            description: 'Retrieve a list of all books. Requires authentication.',
+            description: 'Retrieve a list of all books with filtering, sorting, and pagination support. Requires authentication.',
             security: [{ bearerAuth: [] }],
+            parameters: [
+                {
+                    in: 'query',
+                    name: 'page',
+                    schema: {
+                        type: 'integer',
+                        minimum: 1
+                    },
+                    description: 'Page number for pagination'
+                },
+                {
+                    in: 'query',
+                    name: 'limit',
+                    schema: {
+                        type: 'integer',
+                        minimum: 1
+                    },
+                    description: 'Number of items per page'
+                },
+                {
+                    in: 'query',
+                    name: 'sort',
+                    schema: {
+                        type: 'string',
+                        enum: [
+                            'title', '-title',
+                            'author', '-author',
+                            'publisher', '-publisher',
+                            'year', '-year',
+                            'created_at', '-created_at',
+                            'updated_at', '-updated_at'
+                        ]
+                    },
+                    description: 'Sort field with direction. Fields without prefix are ascending, with minus (-) prefix are descending',
+                    default: '-created_at'
+                }
+            ],
             responses: {
                 200: {
                     description: 'List of books retrieved successfully',
@@ -13,10 +50,27 @@ export default {
                             schema: {
                                 type: 'object',
                                 properties: {
-                                    books: {
+                                    data: {
                                         type: 'array',
                                         items: {
                                             $ref: '#/components/schemas/Book'
+                                        }
+                                    },
+                                    meta: {
+                                        type: 'object',
+                                        properties: {
+                                            total: {
+                                                type: 'integer',
+                                                description: 'Total number of books'
+                                            },
+                                            totalPages: {
+                                                type: 'integer',
+                                                description: 'Total number of pages'
+                                            },
+                                            limit: {
+                                                type: 'integer',
+                                                description: 'Number of items per page'
+                                            }
                                         }
                                     }
                                 }
