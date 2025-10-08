@@ -30,7 +30,8 @@ export const getAllBooks = async (request, response) => {
             }
         })
 
-    } catch (error) {
+    } catch (error)
+    {
         console.log(error)
         response.status(500).json({
             message: "Something happening. Bad luck."
@@ -81,6 +82,7 @@ export const createBook = async (request, response) => {
                 description: description,
                 year: year,
                 author: author,
+
                 publisher: publisher
             }
         })
