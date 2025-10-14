@@ -1,20 +1,30 @@
-import { PrismaClient } from '@prisma/client'
+import prisma from "../config/PrismaClient.js";
 import { buildPrismaQueryOptions } from "prisma-smart-query";
 
-const prisma = new PrismaClient();
-
-
 export const getAllBooks = async (request, response) => {
-
     try {
         const { queryOptions, meta } = buildPrismaQueryOptions(
             request,
             {},
-            ["title", "author", "publisher", "description"],
+            ["title", "description"],
             {
                 defaultSort: { created_at: "desc" },
             }
         )
+
+        queryOptions.include = {
+            authors: {
+                include: {
+                    author: true
+                }
+            },
+            categories: {
+                include: {
+                    category: true
+                }
+            },
+            publisher: true
+        };
 
         const [books, total] = await Promise.all([
             prisma.book.findMany(queryOptions),
@@ -29,11 +39,10 @@ export const getAllBooks = async (request, response) => {
                 totalPages: Math.ceil(total / meta.limit)
             }
         })
-
-    } catch (error)
-    {
+    } catch (error) {
         console.log(error)
         response.status(500).json({
+            error: error,
             message: "Something happening. Bad luck."
         })
     }
@@ -46,8 +55,21 @@ export const getBook = async (request, response) => {
         const { id } = request.params
 
         const book = await prisma.book.findUnique({
-            where: { 
-                id: Number(id) 
+            where: {
+                id: Number(id)
+            },
+            include: {
+                authors: {
+                    include: {
+                        author: true
+                    }
+                },
+                categories: {
+                    include: {
+                        category: true
+                    }
+                },
+                publisher: true
             }
         })
 
@@ -61,37 +83,61 @@ export const getBook = async (request, response) => {
             book
         })
 
-        
     } catch (error) {
         console.log(error)
         response.status(500).json({
             message: "Something happening. Bad luck."
-        }) 
+        })
     }
 
 }
 
 export const createBook = async (request, response) => {
-    const { title, description, year, author, publisher } = request.body;
+    const { title, description, year, authorIds, categoryIds, publisherId } = request.body;
 
     try {
 
         const newBook = await prisma.book.create({
             data: {
-                title: title,
-                description: description,
-                year: year,
-                author: author,
-
-                publisher: publisher
+                title,
+                description,
+                year,
+                publisherId,
+                authors: {
+                    create: authorIds.map(authorId => ({
+                        author: {
+                            connect: { id: authorId }
+                        }
+                    }))
+                },
+                categories: {
+                    create: categoryIds.map(categoryId => ({
+                        category: {
+                            connect: { id: categoryId }
+                        }
+                    }))
+                }
+            },
+            include: {
+                authors: {
+                    include: {
+                        author: true
+                    }
+                },
+                categories: {
+                    include: {
+                        category: true
+                    }
+                },
+                publisher: true
             }
         })
 
         response.status(201).json({
             message: "Book created successfully.",
             newBook
-        })        
-        
+        })
+
     } catch (error) {
         console.log(error)
         response.status(500).json({
@@ -101,19 +147,53 @@ export const createBook = async (request, response) => {
 }
 
 export const updateBook = async (request, response) => {
-    const { title, description, year, author, publisher } = request.body;
+    const { title, description, year, authorIds, categoryIds, publisherId } = request.body;
     const { id } = request.params
 
     try {
-        
+
+        await prisma.bookAuthors.deleteMany({
+            where: { book_id: Number(id) }
+        });
+
+        await prisma.bookCategory.deleteMany({
+            where: { book_id: Number(id) }
+        });
+
         const updatedBook = await prisma.book.update({
             where: { id: Number(id) },
             data: {
                 title,
                 description,
                 year,
-                author,
-                publisher
+                publisherId,
+                authors: {
+                    create: authorIds.map(authorId => ({
+                        author: {
+                            connect: { id: authorId }
+                        }
+                    }))
+                },
+                categories: {
+                    create: categoryIds.map(categoryId => ({
+                        category: {
+                            connect: { id: categoryId }
+                        }
+                    }))
+                }
+            },
+            include: {
+                authors: {
+                    include: {
+                        author: true
+                    }
+                },
+                categories: {
+                    include: {
+                        category: true
+                    }
+                },
+                publisher: true
             }
         })
 

@@ -6,10 +6,12 @@ import { authenticateToken } from "../middlewares/auth.middleware.js";
 
 const router = Router();
 
-router.get('/books', authenticateToken,  getAllBooks)
-router.get('/books/:id', authenticateToken, getBook)
-router.post('/books', authenticateToken, validate(bookSchema), createBook);
-router.put('/books/:id', authenticateToken, validate(bookSchema), updateBook);
-router.delete('/books/:id', authenticateToken, deleteBook)
+router.use(authenticateToken);
+
+router.get('/books',  getAllBooks)
+router.get('/books/:id', getBook)
+router.post('/books', validate(bookSchema), createBook);
+router.put('/books/:id', validate(bookSchema), updateBook);
+router.delete('/books/:id', deleteBook)
 
 export default router;

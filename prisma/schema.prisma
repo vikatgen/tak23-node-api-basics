@@ -21,15 +21,38 @@ model Book {
   title       String
   description String
   year        Int
-  author      String
-  publisher   String
 
   categories BookCategory[]
+  authors    BookAuthors[]
+
+  publisherId Int
+  publisher   Publisher @relation(fields: [publisherId], references: [id])
 
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 
   @@map("books")
+}
+
+model Publisher {
+  id   Int    @id @default(autoincrement())
+  name String @unique
+
+  books Book[]
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+}
+
+model Author {
+  id         Int    @id @default(autoincrement())
+  first_name String
+  last_name  String
+
+  books BookAuthors[]
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
 }
 
 model Category {
@@ -42,6 +65,17 @@ model Category {
   updated_at DateTime @updatedAt
 
   @@map("categories")
+}
+
+model BookAuthors {
+  book_id Int
+  book    Book @relation(fields: [book_id], references: [id])
+
+  author_id Int
+  author    Author @relation(fields: [author_id], references: [id])
+
+  @@id([book_id, author_id])
+  @@map("book_authors")
 }
 
 model BookCategory {
