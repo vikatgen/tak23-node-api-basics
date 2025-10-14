@@ -15,7 +15,11 @@ export const getAllAuthors = async (request, response) => {
         queryOptions.include = {
             books: {
                 include: {
-                    book: true
+                    book: {
+                        include: {
+                            publisher: true
+                        }
+                    }
                 }
             }
         };
