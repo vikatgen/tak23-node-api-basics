@@ -2,6 +2,9 @@ import swaggerUi from 'swagger-ui-express';
 import swaggerJSDoc from "swagger-jsdoc";
 import bookDocs from "../docs/swagger/book.docs.js";
 import authDocs from "../docs/swagger/auth.docs.js";
+import authorDocs from "../docs/swagger/author.docs.js";
+import publisherDocs from "../docs/swagger/publisher.docs.js";
+import categoryDocs from "../docs/swagger/category.docs.js";
 import schemas from "../docs/swagger/schema.js";
 import environment from "./config.js";
 
@@ -21,6 +24,9 @@ const swaggerOptions = {
         paths: {
             ...bookDocs,
             ...authDocs,
+            ...authorDocs,
+            ...publisherDocs,
+            ...categoryDocs,
         },
         components: {
             schemas: schemas,

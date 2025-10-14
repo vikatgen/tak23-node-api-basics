@@ -100,6 +100,99 @@ export default {
             }
         }
     },
+    CategoryInput: {
+        type: 'object',
+        required: ['name'],
+        properties: {
+            name: {
+                type: 'string',
+                example: 'Fiction',
+                description: 'Name of the category'
+            }
+        }
+    },
+    Author: {
+        type: 'object',
+        properties: {
+            id: {
+                type: 'integer',
+                example: 1,
+                description: 'Unique identifier for the author'
+            },
+            first_name: {
+                type: 'string',
+                example: 'F. Scott',
+                description: 'First name of the author'
+            },
+            last_name: {
+                type: 'string',
+                example: 'Fitzgerald',
+                description: 'Last name of the author'
+            },
+            created_at: {
+                type: 'string',
+                format: 'date-time',
+                description: 'Date and time when the author was created'
+            },
+            updated_at: {
+                type: 'string',
+                format: 'date-time',
+                description: 'Date and time when the author was last updated'
+            }
+        }
+    },
+    AuthorInput: {
+        type: 'object',
+        required: ['first_name', 'last_name'],
+        properties: {
+            first_name: {
+                type: 'string',
+                example: 'F. Scott',
+                description: 'First name of the author'
+            },
+            last_name: {
+                type: 'string',
+                example: 'Fitzgerald',
+                description: 'Last name of the author'
+            }
+        }
+    },
+    Publisher: {
+        type: 'object',
+        properties: {
+            id: {
+                type: 'integer',
+                example: 1,
+                description: 'Unique identifier for the publisher'
+            },
+            name: {
+                type: 'string',
+                example: 'Charles Scribner\'s Sons',
+                description: 'Name of the publisher'
+            },
+            created_at: {
+                type: 'string',
+                format: 'date-time',
+                description: 'Date and time when the publisher was created'
+            },
+            updated_at: {
+                type: 'string',
+                format: 'date-time',
+                description: 'Date and time when the publisher was last updated'
+            }
+        }
+    },
+    PublisherInput: {
+        type: 'object',
+        required: ['name'],
+        properties: {
+            name: {
+                type: 'string',
+                example: 'Charles Scribner\'s Sons',
+                description: 'Name of the publisher'
+            }
+        }
+    },
     User: {
         type: 'object',
         properties: {
