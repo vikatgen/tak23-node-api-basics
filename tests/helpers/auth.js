@@ -1,12 +1,14 @@
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import prisma from '../../config/PrismaClient.js';
+import config from '../../config/config.js';
 
 export async function createAuthenticatedUser(userData = {}) {
+
   const defaultUser = {
-    name: 'Test User',
-    email: 'test@example.com',
-    password: 'password123',
+    name: 'Gen Vikat',
+    email: 'gen.vikat@ametikool.ee',
+    password: 'gen.vikat@ametikool.ee',
   };
 
   const user = { ...defaultUser, ...userData };
@@ -20,12 +22,7 @@ export async function createAuthenticatedUser(userData = {}) {
     },
   });
 
-  const JWT_SECRET = process.env.JWT_SECRET_HASH || 'test-secret-hash-for-testing-only';
-  const token = jwt.sign(
-    { id: createdUser.id, email: createdUser.email },
-    JWT_SECRET,
-    { expiresIn: '1h' }
-  );
+  const token = await generateToken(createdUser?.id, createdUser?.email);
 
   return {
     user: createdUser,
@@ -35,7 +32,7 @@ export async function createAuthenticatedUser(userData = {}) {
 }
 
 export function generateToken(userId, email) {
-  const JWT_SECRET = process.env.JWT_SECRET_HASH || 'test-secret-hash-for-testing-only';
+  const JWT_SECRET = config.JWT_SECRET_HASH;
   return jwt.sign(
     { id: userId, email },
     JWT_SECRET,
