@@ -8,7 +8,6 @@ dotenv.config();
 export const register = async (request, response) => {
     try {
         const { email, password } = request.body;
-        console.log({ email, password })
 
         const existingUser = await prisma.user.findUnique({
             where: { email }
