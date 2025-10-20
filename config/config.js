@@ -12,6 +12,11 @@ const config = {
         DATABASE_URL: process.env.DATABASE_URL || 'file:./dev.db',
         LOGGER_LEVEL: 'debug'
     },
+    test: {
+        DATABASE_URL: process.env.DATABASE_URL || 'file:./test.sqlite',
+        LOGGER_LEVEL: 'error',
+        PORT: 3007
+    },
     production: {
         DATABASE_URL: process.env.DATABASE_URL || 'file:./dev.db',
         LOGGER_LEVEL: 'info'
