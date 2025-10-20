@@ -15,8 +15,6 @@ export async function disconnectDatabase() {
 }
 
 export async function seedTestData() {
-  await cleanDatabase();
-
   const publisher = await prisma.publisher.create({
     data: {
       name: 'Test Publisher',
