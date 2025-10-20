@@ -27,6 +27,10 @@ app.use(authorRoutes);
 app.use(categoryRoutes);
 app.use(publisherRoutes);
 
-app.listen(PORT, () => {
-    console.log(`API docs available on http://localhost:${PORT}/api-docs . Server listening on http://localhost:${PORT}`);
-});
+if (process.env.NODE_ENV !== 'test') {
+    app.listen(PORT, () => {
+        console.log(`API docs available on http://localhost:${PORT}/api-docs . Server listening on http://localhost:${PORT}`);
+    });
+}
+
+export default app;
