@@ -80,6 +80,53 @@ describe("Books API", () => {
             expect(response.body.book).toHaveProperty("id");
             expect(response.body.book.id).toBe(bookId);
         })
+
+        it("should return 404 if book not found", async () => {
+            const response = await request(app)
+                .get("/books/2")
+                .set("Authorization", `Bearer ${authToken}`)
+                .expect(404);
+
+            expect(response.body).toHaveProperty("message");
+            expect(response.body.message).toBe("Book not found.");
+        })
+
+        // TODO: SQLite does not support case-sensitive search, convert to PostgreSQL
+        /*it("should support search by title", async () => {
+            await request(app)
+            .post("/books")
+                .set("Authorization", `Bearer ${authToken}`)
+                .send({
+                    title: "Javascript",
+                    description: "A JS book description",
+                    year: 2024,
+                    authorIds: [testingData.authors[0].id, testingData.authors[1].id],
+                    categoryIds: [testingData.categories[0].id, testingData.categories[1].id],
+                    publisherId: testingData.publisher.id,
+                })
+
+            await request(app)
+            .post("/books")
+                .set("Authorization", `Bearer ${authToken}`)
+                .send({
+                    title: "Python",
+                    description: "A Python book description",
+                    year: 2024,
+                    authorIds: [testingData.authors[0].id, testingData.authors[1].id],
+                    categoryIds: [testingData.categories[0].id, testingData.categories[1].id],
+                    publisherId: testingData.publisher.id,
+                })
+
+            const response = await request(app)
+                .get("/books?search=Javascript")
+                .set("Authorization", `Bearer ${authToken}`)
+                .expect(200);
+
+            expect(response.body).toHaveProperty("data");
+            expect(Array.isArray(response.body.data)).toBe(true);
+            expect(response.body.data.length).toBeGreaterThanOrEqual(1);
+            expect(response.body.data[0].title).toContain("Javascript");
+        })*/
     })
 
     describe("POST /books", () => {
@@ -121,8 +168,6 @@ describe("Books API", () => {
                     publisherId: testingData.publisher.id,
                 })
                 .expect(400);
-
-            console.log(response.body);
 
             expect(response.body).toHaveProperty("message");
             expect(response.body.message).toBe("ValidationError");
