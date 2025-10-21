@@ -1,4 +1,8 @@
 .env
+.env.test
 /node_modules
 /prisma/dev.sqlite
 /prisma/dev.sqlite-journal
+/prisma/test.sqlite
+/prisma/test.sqlite-journal
+coverage/

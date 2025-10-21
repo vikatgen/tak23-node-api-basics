@@ -1,18 +1,16 @@
 import jwt from "jsonwebtoken";
-import { PrismaClient } from "@prisma/client";
-
-const prisma = new PrismaClient();
+import prisma from "../config/PrismaClient.js";
+import config from "../config/config.js";
 
 export const authenticateToken = async (request, response, next) => {
     try {
-        // "Bearer lajwef980u34+09u5rplkjqwep9uf0q394jopf"
         const token = request.header("Authorization")?.replace("Bearer ", "");
 
         if (!token) {
             return response.status(401).json({ message: "Invalid token" });
         }
 
-        const payload = jwt.verify(token, process.env.JWT_SECRET_HASH);
+        const payload = jwt.verify(token, config.JWT_SECRET_HASH);
         const user = await prisma.user.findUnique({ where: { id: payload.id } });
 
         if(!user) {
