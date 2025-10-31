@@ -91,8 +91,7 @@ describe("Books API", () => {
             expect(response.body.message).toBe("Book not found.");
         })
 
-        // TODO: SQLite does not support case-sensitive search, convert to PostgreSQL
-        /*it("should support search by title", async () => {
+        it("should support search by title", async () => {
             await request(app)
             .post("/books")
                 .set("Authorization", `Bearer ${authToken}`)
@@ -126,7 +125,7 @@ describe("Books API", () => {
             expect(Array.isArray(response.body.data)).toBe(true);
             expect(response.body.data.length).toBeGreaterThanOrEqual(1);
             expect(response.body.data[0].title).toContain("Javascript");
-        })*/
+        })
     })
 
     describe("POST /books", () => {
